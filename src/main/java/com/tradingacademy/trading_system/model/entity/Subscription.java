@@ -1,5 +1,9 @@
+
 package com.tradingacademy.trading_system.model.entity;
 
+import com.tradingacademy.trading_system.model.entity.Order;
+import com.tradingacademy.trading_system.model.entity.Payment;
+import com.tradingacademy.trading_system.model.entity.SubscriptionPlan;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +11,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "subscriptions")
+@Table(name = "subscription")
 @Getter
 @Setter
 public class Subscription {
@@ -20,22 +24,27 @@ public class Subscription {
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
-  @Column(nullable = false)
-  private String subscriptionType;
+  @ManyToOne
+  @JoinColumn(name = "plan_id")
+  private SubscriptionPlan subscriptionPlan; // Reference to SubscriptionPlan
 
-  @Column(nullable = false)
-  private Double amount; // 订阅金额
+  @Column(name = "amount")
+  private Double amount;
 
-  @Column(nullable = false)
+  @Column(name = "start_date")
   private LocalDateTime startDate;
 
-  @Column(nullable = false)
+  @Column(name = "end_date")
   private LocalDateTime endDate;
 
-  @Column(nullable = false)
-  private String status; // "ACTIVE" 或 "EXPIRED"
+  @Column(name = "status")
+  private String status;
 
   @OneToOne
-  @JoinColumn(name = "payment_id", nullable = false)
+  @JoinColumn(name = "payment_id")
   private Payment payment;
+
+  @OneToOne
+  @JoinColumn(name = "order_id")
+  private Order order;
 }
